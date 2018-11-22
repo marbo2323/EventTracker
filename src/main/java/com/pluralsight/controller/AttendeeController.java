@@ -1,9 +1,11 @@
 package com.pluralsight.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.pluralsight.model.Attendee;
@@ -19,8 +21,13 @@ public class AttendeeController {
 	}
 
 	@PostMapping(value = "/attendee")
-	public String processAttendee(@ModelAttribute("attendee") Attendee attendee) {
+	public String processAttendee(@Valid Attendee attendee, BindingResult validation, Model model) {
 		System.out.println(attendee.getName());
+		
+		if (validation.hasErrors()) {
+			return "attendee";
+		}
+		
 		return "redirect:index.html";
 	}
 }
